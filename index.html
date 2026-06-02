@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tony — Healthcare AI Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF8F2;
+    --bg-card: #FFFFFF;
+    --bg-sunken: #F0EBE0;
+    --ink: #1A2F4A;
+    --ink-soft: #4A5C75;
+    --ink-faint: #8A95A6;
+    --rule: #DDD4C0;
+    --rule-soft: #EBE4D2;
+    --teal: #0D5E4A;
+    --teal-soft: #D9EBE2;
+    --blue: #155382;
+    --blue-soft: #DAE7F2;
+    --amber: #8F5A0F;
+    --amber-soft: #F1E4CB;
+    --green: #2F5A1A;
+    --green-soft: #DFEBCF;
+    --gray-soft: #EDEBE5;
+    --purple: #4E3D8A;
+    --purple-soft: #E3DFF1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 920px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8F5EE 100%);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 40px 36px;
+    margin-bottom: 32px;
+  }
+  .hero__eyebrow {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .hero__name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 42px;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .hero__role {
+    font-size: 18px;
+    color: var(--ink-soft);
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .hero__credentials {
+    font-size: 14px;
+    color: var(--ink-faint);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .last-updated {
+    display: inline-block;
+    background: var(--teal-soft);
+    color: var(--teal);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  /* SECTIONS */
+  .section { margin-bottom: 36px; }
+  .section__title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 24px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+    letter-spacing: -0.01em;
+  }
+  .section__title .num {
+    font-style: italic;
+    color: var(--ink-faint);
+    margin-right: 8px;
+    font-size: 18px;
+  }
+  .section p {
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+
+  /* STATS STRIP */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .stats__cell {
+    padding: 18px 12px;
+    text-align: center;
+    border-right: 1px solid var(--rule);
+  }
+  .stats__cell:last-child { border-right: none; }
+  .stats__num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 30px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stats__label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  /* MILESTONE TABLE */
+  .table-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead th {
+    background: var(--bg-sunken);
+    text-align: left;
+    padding: 11px 14px;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--rule);
+  }
+  thead th.center { text-align: center; }
+  tbody td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--rule-soft);
+    color: var(--ink-soft);
+    vertical-align: middle;
+  }
+  tbody td.center { text-align: center; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(0,0,0,0.015); }
+  td .proj-id {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  td .proj-name {
+    color: var(--ink);
+    font-weight: 500;
+    display: block;
+  }
+  td .proj-sub {
+    color: var(--ink-faint);
+    font-size: 12px;
+    margin-top: 2px;
+    display: block;
+  }
+
+  /* STATUS PILLS */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .pill::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    display: inline-block;
+  }
+  .pill--shipped { background: var(--green-soft); color: var(--green); }
+  .pill--shipped::before { background: var(--green); }
+  .pill--progress { background: var(--blue-soft); color: var(--blue); }
+  .pill--progress::before { background: var(--blue); }
+  .pill--pending { background: var(--gray-soft); color: var(--ink-faint); }
+  .pill--pending::before { background: var(--ink-faint); }
+  .pill--delayed { background: var(--amber-soft); color: var(--amber); }
+  .pill--delayed::before { background: var(--amber); }
+
+  /* VERTICAL TAG */
+  .vert {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .vert--health { background: var(--teal-soft); color: var(--teal); }
+  .vert--fin { background: var(--purple-soft); color: var(--purple); }
+
+  /* LINK */
+  td a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 12.5px;
+    border-bottom: 1px dotted var(--blue);
+  }
+  td a:hover { border-bottom-style: solid; }
+  td .no-link { color: var(--ink-faint); font-size: 12.5px; }
+
+  /* CREDENTIALS BLOCK */
+  .creds {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .creds__card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 18px 22px;
+  }
+  .creds__card h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .creds__card ul { list-style: none; }
+  .creds__card li {
+    padding: 6px 0;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .creds__card li::before {
+    content: "";
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--teal);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+  .creds__card li.pending::before { background: var(--ink-faint); }
+  .creds__card li strong { color: var(--ink); font-weight: 600; }
+  .creds__card li .meta { color: var(--ink-faint); font-size: 12px; }
+
+  /* CONTACT */
+  .contact {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 22px 26px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .contact__item { font-size: 13.5px; }
+  .contact__item__label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .contact__item__value { color: var(--ink); font-weight: 500; }
+  .contact__item__value a { color: var(--blue); text-decoration: none; border-bottom: 1px dotted var(--blue); }
+
+  /* FOOTER */
+  .foot {
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 12px;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule-soft);
+    font-style: italic;
+    font-family: 'Fraunces', Georgia, serif;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 720px) {
+    .container { padding: 20px 16px 48px; }
+    .hero { padding: 28px 22px; }
+    .hero__name { font-size: 32px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stats__cell:nth-child(2) { border-right: none; }
+    .stats__cell:nth-child(1), .stats__cell:nth-child(2) { border-bottom: 1px solid var(--rule); }
+    .creds { grid-template-columns: 1fr; }
+    table { font-size: 12.5px; }
+    thead th, tbody td { padding: 8px 10px; }
+    td .proj-sub { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero__eyebrow">Public progress page</div>
+    <h1 class="hero__name">Cy Hsu</h1>
+    <div class="hero__role">Independent Healthcare AI Researcher</div>
+    <div class="hero__credentials">MBA · University of Chicago Booth School of Business</div>
+    <div class="last-updated">Last updated: May 31, 2026</div>
+  </div>
+
+  <!-- STATS STRIP -->
+  <div class="stats">
+    <div class="stats__cell"><div class="stats__num">9</div><div class="stats__label">Portfolio projects</div></div>
+    <div class="stats__cell"><div class="stats__num">14</div><div class="stats__label">Week schedule</div></div>
+    <div class="stats__cell"><div class="stats__num">3</div><div class="stats__label">Stacked certifications</div></div>
+    <div class="stats__cell"><div class="stats__num">30+</div><div class="stats__label">Discovery conversations</div></div>
+  </div>
+
+  <!-- SECTION 1 · MISSION -->
+  <section class="section">
+    <h2 class="section__title"><span class="num">01</span>Current mission</h2>
+    <p>Independent healthcare AI researcher building a portfolio of nine production-grade analytics projects from May 25 through September 4, 2026. The portfolio demonstrates Claude-native AI engineering applied to healthcare operations (denial management, prior authorization, clinical decision support) and financial valuation (LBO modeling, M&amp;A comparable analysis).</p>
+    <p>The work combines a University of Chicago Booth MBA, CFA-track quantitative training, and 13+ years of credit underwriting experience to create capability not easily replicated by either generic AI consultancies or domain-only analysts. Updates posted weekly on Fridays. Reference contact available on request.</p>
+  </section>
+
+  <!-- SECTION 2 · MILESTONE TRACKER -->
+  <section class="section">
+    <h2 class="section__title"><span class="num">02</span>14-week portfolio build · milestones</h2>
+    <p style="margin-bottom: 16px;">Projects ship on Fridays. Healthcare projects in Weeks 1-10. Fintech valuation projects in Weeks 11-14.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 60px">ID</th>
+            <th>Project</th>
+            <th style="width: 130px">Ship date</th>
+            <th style="width: 90px" class="center">Vertical</th>
+            <th style="width: 130px" class="center">Status</th>
+            <th style="width: 110px">Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="proj-id">P1</span></td>
+            <td><span class="proj-name">30-Day Readmission Predictor</span><span class="proj-sub">MIMIC-IV · logistic + XGBoost + SHAP</span></td>
+            <td class="center">Fri Jun 12</td>
+            <td class="center"><span class="vert vert--health">Health</span></td>
+            <td class="center"><span class="pill pill--progress">In progress</span></td>
+            <td><span class="no-link">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="proj-id">P2</span></td>
+            <td><span class="proj-name">Oncology Chart Summarization</span><span class="proj-sub">Banner Health pattern · synthetic notes</span></td>
+            <td class="center">Fri Jun 19</td>
+            <td class="center"><span class="vert vert--health">Health</span></td>
+            <td class="center"><span class="pill pill--pending">Not started</span></td>
+            <td><span class="no-link">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="proj-id">P3</span></td>
+            <td><span class="proj-name">Prior Authorization Automation</span><span class="proj-sub">CMS Coverage DB · Claude Citations API</span></td>
+            <td class="center">Fri Jul 3</td>
+            <td class="center"><span class="vert vert--health">Health</span></td>
+            <td class="center"><span class="pill pill--pending">Not started</span></td>
+            <td><span class="no-link">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="proj-id">P4</span></td>
+            <td><span class="proj-name">Clinical Trial Matching</span><span class="proj-sub">ClinicalTrials.gov · sub-agent pattern</span></td>
+            <td class="center">Fri Jul 17</td>
+            <td class="center"><span class="vert vert--health">Health</span></td>
+            <td class="center"><span class="pill pill--pending">Not started</span></td>
+            <td><span class="no-link">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="proj-id">P5</span></td>
+            <td><span class="proj-name">Medical Necessity Reviewer</span><span class="proj-sub">Extends P3 · documentation gap detection</span></td>
+            <td class="center">Fri Jul 31</td>
+            <td class="center"><span class="vert vert--health">Health</span></td>
+            <td class="center"><span class="pill pill--pending">Not started</span></td>
+            <td><span class="no-link">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="proj-id">P6</span></td>
+            <td><span class="proj-name">Denial Management Dashboard</span><span class="proj-sub">Claims + denial prediction + appeal drafting</span></td>
+            <td class="center">Fri Aug 14</td>
+            <td class="center"><span class="vert vert--health">Health</span></td>
+            <td class="center"><span class="pill pill--pending">Not started</span></td>
+            <td><span class="no-link">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="proj-id">P7</span></td>
+            <td><span class="proj-name">LBO Auto-Modeler MVP</span><span class="proj-sub">CIM → working 5-yr LBO model</span></td>
+            <td class="center">Fri Aug 21</td>
+            <td class="center"><span class="vert vert--fin">Fintech</span></td>
+            <td class="center"><span class="pill pill--pending">Not started</span></td>
+            <td><span class="no-link">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="proj-id">P8</span></td>
+            <td><span class="proj-name">LBO Returns + Sensitivity Engine</span><span class="proj-sub">Monte Carlo IRR distribution</span></td>
+            <td class="center">Fri Aug 28</td>
+            <td class="center"><span class="vert vert--fin">Fintech</span></td>
+            <td class="center"><span class="pill pill--pending">Not started</span></td>
+            <td><span class="no-link">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="proj-id">P9</span></td>
+            <td><span class="proj-name">M&amp;A Comp Screener</span><span class="proj-sub">SEC EDGAR + merger consequences</span></td>
+            <td class="center">Fri Sep 4</td>
+            <td class="center"><span class="vert vert--fin">Fintech</span></td>
+            <td class="center"><span class="pill pill--pending">Not started</span></td>
+            <td><span class="no-link">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 3 · CREDENTIALS -->
+  <section class="section">
+    <h2 class="section__title"><span class="num">03</span>Credentials &amp; training</h2>
+    <div class="creds">
+
+      <div class="creds__card">
+        <h3>Education</h3>
+        <ul>
+          <li><div><strong>MBA</strong> · University of Chicago Booth School of Business<br><span class="meta">Quantitative finance + strategy concentration</span></div></li>
+          <li><div><strong>CFA Level 2 candidate</strong><br><span class="meta">Continuing to Level 3</span></div></li>
+        </ul>
+      </div>
+
+      <div class="creds__card">
+        <h3>Required training</h3>
+        <ul>
+          <li><div><strong>CITI</strong> Data or Specimens Only Research<br><span class="meta">Completed May 25, 2026 · Valid through May 2029</span></div></li>
+          <li><div><strong>ORCID iD</strong> registered<br><span class="meta">Public researcher identifier</span></div></li>
+          <li class="pending"><div><strong>HIPAA Awareness Training</strong><br><span class="meta">In progress</span></div></li>
+        </ul>
+      </div>
+
+      <div class="creds__card">
+        <h3>Certifications in progress</h3>
+        <ul>
+          <li class="pending"><div><strong>Microsoft AI &amp; ML Engineering</strong><br><span class="meta">Coursera Professional Certificate · 5-course program</span></div></li>
+          <li class="pending"><div><strong>Stanford AI for Medicine</strong><br><span class="meta">DeepLearning.AI specialization · 3 courses</span></div></li>
+          <li class="pending"><div><strong>Microsoft AI-103</strong> Azure AI App and Agent Developer<br><span class="meta">Target exam: September 2026</span></div></li>
+        </ul>
+      </div>
+
+      <div class="creds__card">
+        <h3>Data &amp; infrastructure</h3>
+        <ul>
+          <li class="pending"><div><strong>MIMIC-IV</strong> (PhysioNet)<br><span class="meta">Access requested May 27, 2026 · 5-7 day approval</span></div></li>
+          <li><div><strong>Anthropic Claude API</strong><br><span class="meta">Primary AI provider for portfolio</span></div></li>
+          <li><div><strong>Azure AI Foundry</strong><br><span class="meta">Secondary infrastructure · claude-opus-4-6 deployment</span></div></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4 · CONTACT -->
+  <section class="section">
+    <h2 class="section__title"><span class="num">04</span>Contact &amp; references</h2>
+    <div class="contact">
+      <div class="contact__item">
+        <div class="contact__item__label">LinkedIn</div>
+        <div class="contact__item__value"><a www.linkedin.com/in/chungyi-hsu target="_blank">linkedin.com/in/chungyi-hsu</a></div>
+      </div>
+      <div class="contact__item">
+        <div class="contact__item__label">GitHub</div>
+        <div class="contact__item__value"><a href="https://github.com/cytonyxu" target="_blank">github.com/cytonyxu</a></div>
+      </div>
+      <div class="contact__item">
+        <div class="contact__item__label">ORCID</div>
+        <div class="contact__item__value"><a href="#" target="_blank">orcid.org/0009-0008-9384-3854</a></div>
+      </div>
+      <div class="contact__item">
+        <div class="contact__item__label">Email</div>
+        <div class="contact__item__value">Available on request</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    Updated weekly · Friday afternoons
+  </div>
+
+</div>
+</body>
+</html>
