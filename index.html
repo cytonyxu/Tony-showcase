@@ -125,7 +125,7 @@
   /* STATS STRIP */
   .stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     background: var(--bg-card);
     border: 1px solid var(--rule);
     border-radius: 10px;
@@ -342,23 +342,63 @@
     font-family: 'Fraunces', Georgia, serif;
   }
 
+  /* MONTHLY TRACKER */
+  .month-table-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 24px;
+  }
+  .month-table-wrap table { font-size: 14px; }
+  .month-table-wrap thead th { font-size: 11px; padding: 11px 12px; }
+  .month-table-wrap tbody td { padding: 13px 12px; font-size: 14px; }
+  .bench-target {
+    display: block;
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+  .bench-val { font-weight: 600; color: var(--ink); }
+  .bench-val.on-track { color: var(--green); }
+  .bench-val.behind   { color: var(--amber); }
+  .bench-val.tbd      { color: var(--ink-faint); font-weight: 400; }
+  .month-label {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .month-range { display: block; font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+
   /* RESPONSIVE */
   @media (max-width: 720px) {
     .container { padding: 20px 16px 52px; }
     .hero { padding: 30px 24px; }
     .hero__name { font-size: 36px; }
-    .stats { grid-template-columns: repeat(2, 1fr); }
-    .stats__cell:nth-child(2) { border-right: none; }
-    .stats__cell:nth-child(1), .stats__cell:nth-child(2) { border-bottom: 1px solid var(--rule); }
+    .stats { grid-template-columns: repeat(3, 1fr); }
+    .stats__cell:nth-child(3) { border-right: none; }
+    .stats__cell:nth-child(1),
+    .stats__cell:nth-child(2),
+    .stats__cell:nth-child(3) { border-bottom: 1px solid var(--rule); }
     .creds { grid-template-columns: 1fr; }
     .contact { grid-template-columns: 1fr 1fr; }
     table { font-size: 14px; }
     thead th, tbody td { padding: 10px 12px; }
     td .proj-sub { display: none; }
+    .month-table-wrap { overflow-x: auto; }
   }
 
   @media (max-width: 480px) {
     .contact { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stats__cell:nth-child(2) { border-right: none; }
+    .stats__cell:nth-child(3) { border-right: 1px solid var(--rule); }
+    .stats__cell:nth-child(1),
+    .stats__cell:nth-child(2),
+    .stats__cell:nth-child(3),
+    .stats__cell:nth-child(4) { border-bottom: 1px solid var(--rule); }
   }
 </style>
 </head>
@@ -378,6 +418,7 @@
   <div class="stats">
     <div class="stats__cell"><div class="stats__num">9</div><div class="stats__label">Portfolio projects</div></div>
     <div class="stats__cell"><div class="stats__num">14</div><div class="stats__label">Week schedule</div></div>
+    <div class="stats__cell"><div class="stats__num">~42</div><div class="stats__label">Hrs / week</div></div>
     <div class="stats__cell"><div class="stats__num">3</div><div class="stats__label">Stacked certifications</div></div>
     <div class="stats__cell"><div class="stats__num">30+</div><div class="stats__label">Discovery conversations</div></div>
   </div>
@@ -483,9 +524,85 @@
     </div>
   </section>
 
-  <!-- SECTION 3 · CREDENTIALS -->
+  <!-- SECTION 3 · MONTHLY BENCHMARKS -->
   <section class="section">
-    <h2 class="section__title"><span class="num">03</span>Credentials &amp; training</h2>
+    <h2 class="section__title"><span class="num">03</span>Monthly progress benchmarks</h2>
+    <p style="margin-bottom: 8px;">Five metrics tracked monthly. Targets based on the 14-week operating plan. Updated each month-end Friday.</p>
+    <p style="margin-bottom: 18px; font-size: 14px; color: var(--ink-faint);">
+      Target hours: ~168/month (42 hrs × 4 weeks) &nbsp;·&nbsp;
+      <span style="color:var(--green); font-weight:600;">● On track</span> &nbsp;
+      <span style="color:var(--amber); font-weight:600;">● Needs attention</span> &nbsp;
+      <span style="color:var(--ink-faint);">● Pending</span>
+    </p>
+    <div class="month-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:130px">Month</th>
+            <th class="center" style="width:110px">Hours logged<br><span style="font-weight:400;text-transform:none;letter-spacing:0">target: ~168</span></th>
+            <th class="center" style="width:120px">Projects shipped<br><span style="font-weight:400;text-transform:none;letter-spacing:0">per schedule</span></th>
+            <th class="center" style="width:110px">Discovery convos<br><span style="font-weight:400;text-transform:none;letter-spacing:0">target: 8–10</span></th>
+            <th class="center" style="width:110px">LinkedIn posts<br><span style="font-weight:400;text-transform:none;letter-spacing:0">target: 2–3</span></th>
+            <th style="width:160px">Cert milestone</th>
+            <th>Notes / retro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="month-label">Month 1</span>
+              <span class="month-range">Jun 2026</span>
+            </td>
+            <td class="center"><span class="bench-val tbd">—</span><span class="bench-target">update Jun 27</span></td>
+            <td class="center"><span class="bench-val tbd">—</span><span class="bench-target">P1 + P2 due</span></td>
+            <td class="center"><span class="bench-val tbd">—</span></td>
+            <td class="center"><span class="bench-val tbd">—</span></td>
+            <td><span style="color:var(--ink-faint);font-size:13px;">HIPAA ✓ · MS C1–C2</span></td>
+            <td><span style="color:var(--ink-faint);font-size:13px;">—</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="month-label">Month 2</span>
+              <span class="month-range">Jul 2026</span>
+            </td>
+            <td class="center"><span class="bench-val tbd">—</span><span class="bench-target">update Jul 31</span></td>
+            <td class="center"><span class="bench-val tbd">—</span><span class="bench-target">P3 + P4 + P5 due</span></td>
+            <td class="center"><span class="bench-val tbd">—</span></td>
+            <td class="center"><span class="bench-val tbd">—</span></td>
+            <td><span style="color:var(--ink-faint);font-size:13px;">Stanford C1–C2 · MS C3</span></td>
+            <td><span style="color:var(--ink-faint);font-size:13px;">—</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="month-label">Month 3</span>
+              <span class="month-range">Aug 2026</span>
+            </td>
+            <td class="center"><span class="bench-val tbd">—</span><span class="bench-target">update Aug 28</span></td>
+            <td class="center"><span class="bench-val tbd">—</span><span class="bench-target">P6 + P7 + P8 due</span></td>
+            <td class="center"><span class="bench-val tbd">—</span></td>
+            <td class="center"><span class="bench-val tbd">—</span></td>
+            <td><span style="color:var(--ink-faint);font-size:13px;">Stanford C3 · AI-103 prep</span></td>
+            <td><span style="color:var(--ink-faint);font-size:13px;">—</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="month-label">Month 4</span>
+              <span class="month-range">Sep 2026</span>
+            </td>
+            <td class="center"><span class="bench-val tbd">—</span><span class="bench-target">update Sep 5</span></td>
+            <td class="center"><span class="bench-val tbd">—</span><span class="bench-target">P9 due</span></td>
+            <td class="center"><span class="bench-val tbd">—</span></td>
+            <td class="center"><span class="bench-val tbd">—</span></td>
+            <td><span style="color:var(--ink-faint);font-size:13px;">AI-103 exam Sep 9</span></td>
+            <td><span style="color:var(--ink-faint);font-size:13px;">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section__title"><span class="num">04</span>Credentials &amp; training</h2>
     <div class="creds">
 
       <div class="creds__card">
@@ -527,7 +644,7 @@
 
   <!-- SECTION 4 · CONTACT -->
   <section class="section">
-    <h2 class="section__title"><span class="num">04</span>Contact &amp; references</h2>
+    <h2 class="section__title"><span class="num">05</span>Contact &amp; references</h2>
     <div class="contact">
       <div class="contact__item">
         <div class="contact__item__label">LinkedIn</div>
