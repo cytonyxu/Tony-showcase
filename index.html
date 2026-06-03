@@ -32,9 +32,9 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* Google Sites embed: suppress iframe's own scrollbar entirely */
+  /* Google Sites embed: page fills the iframe, single internal scroll only */
   html, body {
-    height: auto;
+    height: 100%;
     overflow: hidden;
   }
 
@@ -47,7 +47,22 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  .container { max-width: 960px; margin: 0 auto; padding: 36px 28px 72px; }
+  .container {
+    height: 100%;
+    max-width: 960px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 36px 28px 72px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  /* slim scrollbar so it doesn't look clunky */
+  .container::-webkit-scrollbar { width: 6px; }
+  .container::-webkit-scrollbar-track { background: transparent; }
+  .container::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+  .container::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
 
   /* HERO */
   .hero {
@@ -671,20 +686,5 @@
 
 </div>
 
-<script>
-  // Report page height to Google Sites parent frame so the iframe auto-sizes
-  function reportHeight() {
-    var h = document.documentElement.scrollHeight;
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({ type: 'resize', height: h }, '*');
-    }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', reportHeight);
-  } else {
-    reportHeight();
-  }
-  new ResizeObserver(reportHeight).observe(document.documentElement);
-</script>
 </body>
 </html>
