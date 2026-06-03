@@ -29,50 +29,59 @@
     --purple: #4E3D8A;
     --purple-soft: #E3DFF1;
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* Google Sites embed: let the parent iframe handle scrolling */
+  html, body {
+    height: auto;
+    overflow-x: hidden;
+  }
+
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg);
     color: var(--ink);
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 17px;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
   }
-  .container { max-width: 920px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 36px 28px 72px; }
 
   /* HERO */
   .hero {
     background: linear-gradient(135deg, #FFFFFF 0%, #F8F5EE 100%);
     border: 1px solid var(--rule);
-    border-radius: 12px;
-    padding: 40px 36px;
-    margin-bottom: 32px;
+    border-radius: 14px;
+    padding: 44px 40px;
+    margin-bottom: 36px;
   }
   .hero__eyebrow {
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
-    font-size: 14px;
+    font-size: 15px;
     color: var(--ink-faint);
     letter-spacing: 0.04em;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
   .hero__name {
     font-family: 'Fraunces', Georgia, serif;
     font-weight: 600;
-    font-size: 42px;
+    font-size: 46px;
     line-height: 1.1;
     color: var(--ink);
     letter-spacing: -0.02em;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   .hero__role {
-    font-size: 18px;
+    font-size: 20px;
     color: var(--ink-soft);
     font-weight: 400;
     margin-bottom: 8px;
   }
   .hero__credentials {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--ink-faint);
     font-weight: 500;
     letter-spacing: 0.02em;
@@ -81,23 +90,23 @@
     display: inline-block;
     background: var(--teal-soft);
     color: var(--teal);
-    padding: 4px 12px;
+    padding: 5px 14px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
-    margin-top: 16px;
+    margin-top: 18px;
     letter-spacing: 0.02em;
   }
 
   /* SECTIONS */
-  .section { margin-bottom: 36px; }
+  .section { margin-bottom: 40px; }
   .section__title {
     font-family: 'Fraunces', Georgia, serif;
     font-weight: 500;
-    font-size: 24px;
+    font-size: 26px;
     color: var(--ink);
-    margin-bottom: 16px;
-    padding-bottom: 8px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--rule);
     letter-spacing: -0.01em;
   }
@@ -105,11 +114,12 @@
     font-style: italic;
     color: var(--ink-faint);
     margin-right: 8px;
-    font-size: 18px;
+    font-size: 20px;
   }
   .section p {
     color: var(--ink-soft);
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+    font-size: 17px;
   }
 
   /* STATS STRIP */
@@ -118,12 +128,12 @@
     grid-template-columns: repeat(4, 1fr);
     background: var(--bg-card);
     border: 1px solid var(--rule);
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 32px;
+    margin-bottom: 36px;
   }
   .stats__cell {
-    padding: 18px 12px;
+    padding: 22px 14px;
     text-align: center;
     border-right: 1px solid var(--rule);
   }
@@ -131,16 +141,16 @@
   .stats__num {
     font-family: 'Fraunces', Georgia, serif;
     font-weight: 500;
-    font-size: 30px;
+    font-size: 34px;
     color: var(--ink);
     line-height: 1;
   }
   .stats__label {
-    font-size: 10.5px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--ink-faint);
-    margin-top: 6px;
+    margin-top: 8px;
     font-weight: 500;
   }
 
@@ -148,24 +158,24 @@
   .table-wrap {
     background: var(--bg-card);
     border: 1px solid var(--rule);
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
   }
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
   thead th {
     background: var(--bg-sunken);
     text-align: left;
-    padding: 11px 14px;
+    padding: 13px 16px;
     font-weight: 600;
     color: var(--ink);
-    font-size: 11px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     border-bottom: 1px solid var(--rule);
   }
   thead th.center { text-align: center; }
   tbody td {
-    padding: 12px 14px;
+    padding: 14px 16px;
     border-bottom: 1px solid var(--rule-soft);
     color: var(--ink-soft);
     vertical-align: middle;
@@ -176,18 +186,19 @@
   td .proj-id {
     font-family: 'Fraunces', Georgia, serif;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 15px;
     color: var(--ink);
   }
   td .proj-name {
     color: var(--ink);
-    font-weight: 500;
+    font-weight: 600;
     display: block;
+    font-size: 15px;
   }
   td .proj-sub {
     color: var(--ink-faint);
-    font-size: 12px;
-    margin-top: 2px;
+    font-size: 13px;
+    margin-top: 3px;
     display: block;
   }
 
@@ -196,16 +207,16 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 3px 10px;
+    padding: 4px 12px;
     border-radius: 999px;
-    font-size: 11px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 600;
     letter-spacing: 0.02em;
     white-space: nowrap;
   }
   .pill::before {
     content: "";
-    width: 6px; height: 6px; border-radius: 50%;
+    width: 7px; height: 7px; border-radius: 50%;
     display: inline-block;
   }
   .pill--shipped { background: var(--green-soft); color: var(--green); }
@@ -220,99 +231,112 @@
   /* VERTICAL TAG */
   .vert {
     display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
   }
   .vert--health { background: var(--teal-soft); color: var(--teal); }
   .vert--fin { background: var(--purple-soft); color: var(--purple); }
 
-  /* LINK */
+  /* TABLE LINKS */
   td a {
     color: var(--blue);
     text-decoration: none;
     font-weight: 500;
-    font-size: 12.5px;
+    font-size: 14px;
     border-bottom: 1px dotted var(--blue);
   }
   td a:hover { border-bottom-style: solid; }
-  td .no-link { color: var(--ink-faint); font-size: 12.5px; }
+  td .no-link { color: var(--ink-faint); font-size: 14px; }
 
   /* CREDENTIALS BLOCK */
   .creds {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 18px;
   }
   .creds__card {
     background: var(--bg-card);
     border: 1px solid var(--rule);
-    border-radius: 8px;
-    padding: 18px 22px;
+    border-radius: 10px;
+    padding: 22px 26px;
   }
   .creds__card h3 {
     font-family: 'Fraunces', Georgia, serif;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 18px;
     color: var(--ink);
-    margin-bottom: 10px;
-    padding-bottom: 6px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
     border-bottom: 1px solid var(--rule-soft);
   }
   .creds__card ul { list-style: none; }
   .creds__card li {
-    padding: 6px 0;
+    padding: 9px 0;
     color: var(--ink-soft);
-    font-size: 13.5px;
-    line-height: 1.5;
+    font-size: 15px;
+    line-height: 1.55;
     display: flex;
     align-items: flex-start;
-    gap: 8px;
+    gap: 10px;
+    border-bottom: 1px solid var(--rule-soft);
   }
+  .creds__card li:last-child { border-bottom: none; }
   .creds__card li::before {
     content: "";
-    width: 5px; height: 5px;
+    width: 6px; height: 6px;
     border-radius: 50%;
     background: var(--teal);
-    margin-top: 8px;
+    margin-top: 9px;
     flex-shrink: 0;
   }
-  .creds__card li.pending::before { background: var(--ink-faint); }
+  .creds__card li.pending::before { background: var(--amber); }
   .creds__card li strong { color: var(--ink); font-weight: 600; }
-  .creds__card li .meta { color: var(--ink-faint); font-size: 12px; }
+  .creds__card li .meta {
+    color: var(--ink-faint);
+    font-size: 13px;
+    display: block;
+    margin-top: 2px;
+  }
 
   /* CONTACT */
   .contact {
     background: var(--bg-card);
     border: 1px solid var(--rule);
-    border-radius: 8px;
-    padding: 22px 26px;
-    display: flex;
-    flex-wrap: wrap;
+    border-radius: 10px;
+    padding: 26px 30px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
   }
-  .contact__item { font-size: 13.5px; }
+  .contact__item { font-size: 15px; }
   .contact__item__label {
-    font-size: 11px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--ink-faint);
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
   .contact__item__value { color: var(--ink); font-weight: 500; }
-  .contact__item__value a { color: var(--blue); text-decoration: none; border-bottom: 1px dotted var(--blue); }
+  .contact__item__value a {
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 15px;
+    border-bottom: 1px dotted var(--blue);
+  }
+  .contact__item__value a:hover { border-bottom-style: solid; }
 
   /* FOOTER */
   .foot {
     text-align: center;
     color: var(--ink-faint);
-    font-size: 12px;
-    margin-top: 48px;
-    padding-top: 24px;
+    font-size: 13px;
+    margin-top: 52px;
+    padding-top: 28px;
     border-top: 1px solid var(--rule-soft);
     font-style: italic;
     font-family: 'Fraunces', Georgia, serif;
@@ -320,16 +344,21 @@
 
   /* RESPONSIVE */
   @media (max-width: 720px) {
-    .container { padding: 20px 16px 48px; }
-    .hero { padding: 28px 22px; }
-    .hero__name { font-size: 32px; }
+    .container { padding: 20px 16px 52px; }
+    .hero { padding: 30px 24px; }
+    .hero__name { font-size: 36px; }
     .stats { grid-template-columns: repeat(2, 1fr); }
     .stats__cell:nth-child(2) { border-right: none; }
     .stats__cell:nth-child(1), .stats__cell:nth-child(2) { border-bottom: 1px solid var(--rule); }
     .creds { grid-template-columns: 1fr; }
-    table { font-size: 12.5px; }
-    thead th, tbody td { padding: 8px 10px; }
+    .contact { grid-template-columns: 1fr 1fr; }
+    table { font-size: 14px; }
+    thead th, tbody td { padding: 10px 12px; }
     td .proj-sub { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .contact { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -363,7 +392,7 @@
   <!-- SECTION 2 · MILESTONE TRACKER -->
   <section class="section">
     <h2 class="section__title"><span class="num">02</span>14-week portfolio build · milestones</h2>
-    <p style="margin-bottom: 16px;">Projects ship on Fridays. Healthcare projects in Weeks 1-10. Fintech valuation projects in Weeks 11-14.</p>
+    <p style="margin-bottom: 18px;">Projects ship on Fridays. Healthcare projects in Weeks 1–10. Fintech valuation projects in Weeks 11–14.</p>
     <div class="table-wrap">
       <table>
         <thead>
@@ -371,8 +400,8 @@
             <th style="width: 60px">ID</th>
             <th>Project</th>
             <th style="width: 130px">Ship date</th>
-            <th style="width: 90px" class="center">Vertical</th>
-            <th style="width: 130px" class="center">Status</th>
+            <th style="width: 95px" class="center">Vertical</th>
+            <th style="width: 140px" class="center">Status</th>
             <th style="width: 110px">Link</th>
           </tr>
         </thead>
@@ -471,7 +500,7 @@
         <ul>
           <li><div><strong>CITI</strong> Data or Specimens Only Research<br><span class="meta">Completed May 25, 2026 · Valid through May 2029</span></div></li>
           <li><div><strong>ORCID iD</strong> registered<br><span class="meta">Public researcher identifier</span></div></li>
-          <li class="pending"><div><strong>HIPAA Awareness Training</strong><br><span class="meta">Completed May 28, 2026</span></div></li>
+          <li><div><strong>HIPAA Awareness Training</strong><br><span class="meta">Completed May 28, 2026</span></div></li>
         </ul>
       </div>
 
@@ -502,7 +531,7 @@
     <div class="contact">
       <div class="contact__item">
         <div class="contact__item__label">LinkedIn</div>
-        <div class="contact__item__value"><a www.linkedin.com/in/chungyi-hsu target="_blank">linkedin.com/in/chungyi-hsu</a></div>
+        <div class="contact__item__value"><a href="https://www.linkedin.com/in/chungyi-hsu" target="_blank">linkedin.com/in/chungyi-hsu</a></div>
       </div>
       <div class="contact__item">
         <div class="contact__item__label">GitHub</div>
@@ -510,7 +539,7 @@
       </div>
       <div class="contact__item">
         <div class="contact__item__label">ORCID</div>
-        <div class="contact__item__value"><a href="#" target="_blank">orcid.org/0009-0008-9384-3854</a></div>
+        <div class="contact__item__value"><a href="https://orcid.org/0009-0008-9384-3854" target="_blank">orcid.org/0009-0008-9384-3854</a></div>
       </div>
       <div class="contact__item">
         <div class="contact__item__label">Email</div>
@@ -524,5 +553,21 @@
   </div>
 
 </div>
+
+<script>
+  // Report page height to Google Sites parent frame so the iframe auto-sizes
+  function reportHeight() {
+    var h = document.documentElement.scrollHeight;
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: 'resize', height: h }, '*');
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', reportHeight);
+  } else {
+    reportHeight();
+  }
+  new ResizeObserver(reportHeight).observe(document.documentElement);
+</script>
 </body>
 </html>
