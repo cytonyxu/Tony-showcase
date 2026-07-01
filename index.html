@@ -428,7 +428,7 @@
     <h1 class="hero__name">Chungyi Hsu</h1>
     <div class="hero__role">Independent Healthcare AI Researcher</div>
     <div class="hero__credentials">MBA · University of Chicago Booth School of Business</div>
-    <div class="last-updated">Last updated: June 12, 2026</div>
+    <div class="last-updated">Last updated: June 30, 2026</div>
   </div>
 
   <!-- STATS STRIP -->
@@ -684,6 +684,9 @@
 
   <div class="foot">
     Updated weekly · Friday afternoons
+    <span style="display:block;margin-top:6px;font-size:11px;color:var(--ink-faint);font-style:normal;font-family:'Inter',sans-serif;">
+      This site logs anonymous visit data (IP, country, referrer) for portfolio analytics.
+    </span>
   </div>
 
 </div>
@@ -697,8 +700,8 @@
    ──────────────────────────────────────────────────────────────────── */
 (function(){
   var PAGE    = 'index';
-  var LOG_URL = 'https://script.google.com/macros/s/AKfycbxGmA1PGcQEnKlx6tSc_GUxF06eEaJLurvx7f9ng-3FnBWb7QOzIo-NYJmYsNzD9O8Z/exec__';  /* ← paste your Apps Script Web App URL here */
-  var TOKEN   = '310ec9679133f3';     /* ← paste your ipinfo.io token here         */
+  var LOG_URL = '__APPS_SCRIPT_URL__';  /* ← paste your Apps Script Web App URL here */
+  var TOKEN   = '__IPINFO_TOKEN__';     /* ← paste your ipinfo.io token here         */
 
   if (!LOG_URL || LOG_URL === '__APPS_SCRIPT_URL__') return;
   try {
