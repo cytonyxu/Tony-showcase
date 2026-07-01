@@ -163,5 +163,47 @@
   </footer>
 
 </div>
+
+<script id="_vt">
+/* ── Visitor Tracker (silent) ────────────────────────────────────────
+   Captures: timestamp · page · IP · city · region · country · org/company
+             referrer · browser/device
+   Logs to: Google Sheets via Apps Script Web App
+   ──────────────────────────────────────────────────────────────────── */
+(function(){
+  var PAGE    = 'case-study-p1';
+  var LOG_URL = 'https://script.google.com/macros/s/AKfycbxGmA1PGcQEnKlx6tSc_GUxF06eEaJLurvx7f9ng-3FnBWb7QOzIo-NYJmYsNzD9O8Z/exec__';  /* ← paste your Apps Script Web App URL here */
+  var TOKEN   = '310ec9679133f3';     /* ← paste your ipinfo.io token here         */
+
+  if (!LOG_URL || LOG_URL === '__APPS_SCRIPT_URL__') return;
+  try {
+    var url = TOKEN && TOKEN !== '__IPINFO_TOKEN__'
+      ? 'https://ipinfo.io/json?token=' + TOKEN
+      : 'https://ipinfo.io/json';
+    fetch(url)
+      .then(function(r){ return r.json(); })
+      .then(function(ip){
+        var row = {
+          ts:      new Date().toISOString(),
+          page:    PAGE,
+          ip:      ip.ip      || '',
+          city:    ip.city    || '',
+          region:  ip.region  || '',
+          country: ip.country || '',
+          org:     ip.org     || '',
+          ref:     document.referrer || '(direct)',
+          ua:      navigator.userAgent.substring(0, 220)
+        };
+        fetch(LOG_URL, {
+          method:  'POST',
+          mode:    'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(row)
+        });
+      }).catch(function(){});
+  } catch(e){}
+})();
+</script>
+
 </body>
 </html>

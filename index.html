@@ -428,7 +428,7 @@
     <h1 class="hero__name">Chungyi Hsu</h1>
     <div class="hero__role">Independent Healthcare AI Researcher</div>
     <div class="hero__credentials">MBA · University of Chicago Booth School of Business</div>
-    <div class="last-updated">Last updated: June 30, 2026</div>
+    <div class="last-updated">Last updated: June 12, 2026</div>
   </div>
 
   <!-- STATS STRIP -->
@@ -475,10 +475,10 @@
           <tr>
             <td><span class="proj-id">P2</span></td>
             <td><span class="proj-name">Oncology Chart Summarization</span><span class="proj-sub">Banner Health pattern · synthetic notes</span></td>
-            <td class="center">Mon Jun 30</td>
+            <td class="center">Fri Jun 19</td>
             <td class="center"><span class="vert vert--health">Health</span></td>
-            <td class="center"><span class="pill pill--shipped">Shipped</span></td>
-            <td><a href="https://cytonyxu.github.io/Tony-showcase/case-study-p2.html" target="_blank">Case study</a></td>
+            <td class="center"><span class="pill pill--pending">Not started</span></td>
+            <td><span class="no-link">—</span></td>
           </tr>
           <tr>
             <td><span class="proj-id">P3</span></td>
@@ -687,6 +687,48 @@
   </div>
 
 </div>
+
+
+<script id="_vt">
+/* ── Visitor Tracker (silent) ────────────────────────────────────────
+   Captures: timestamp · page · IP · city · region · country · org/company
+             referrer · browser/device
+   Logs to: Google Sheets via Apps Script Web App
+   ──────────────────────────────────────────────────────────────────── */
+(function(){
+  var PAGE    = 'index';
+  var LOG_URL = 'https://script.google.com/macros/s/AKfycbxGmA1PGcQEnKlx6tSc_GUxF06eEaJLurvx7f9ng-3FnBWb7QOzIo-NYJmYsNzD9O8Z/exec__';  /* ← paste your Apps Script Web App URL here */
+  var TOKEN   = '310ec9679133f3';     /* ← paste your ipinfo.io token here         */
+
+  if (!LOG_URL || LOG_URL === '__APPS_SCRIPT_URL__') return;
+  try {
+    var url = TOKEN && TOKEN !== '__IPINFO_TOKEN__'
+      ? 'https://ipinfo.io/json?token=' + TOKEN
+      : 'https://ipinfo.io/json';
+    fetch(url)
+      .then(function(r){ return r.json(); })
+      .then(function(ip){
+        var row = {
+          ts:      new Date().toISOString(),
+          page:    PAGE,
+          ip:      ip.ip      || '',
+          city:    ip.city    || '',
+          region:  ip.region  || '',
+          country: ip.country || '',
+          org:     ip.org     || '',
+          ref:     document.referrer || '(direct)',
+          ua:      navigator.userAgent.substring(0, 220)
+        };
+        fetch(LOG_URL, {
+          method:  'POST',
+          mode:    'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(row)
+        });
+      }).catch(function(){});
+  } catch(e){}
+})();
+</script>
 
 </body>
 </html>
