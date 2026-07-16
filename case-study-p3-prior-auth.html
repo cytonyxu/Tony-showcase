@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prior Auth Automation — Chungyi Hsu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:        #1B2A4A;
+    --teal:        #2A7F7E;
+    --cream:       #F7F4EC;
+    --amber:       #C8893B;
+    --ink:         #2B2B2B;
+    --muted:       #6B7280;
+    --teal-light:  #E8F2F1;
+    --amber-light: #FBF1E4;
+    --border:      #DDD8CE;
+    --green-light: #D1FAE5;
+    --green-ink:   #065F46;
+    --red-light:   #FEE2E2;
+    --red-ink:     #991B1B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 18px; scroll-behavior: smooth; }
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--navy);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav .logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  nav .nav-links { display: flex; gap: 1.75rem; }
+  nav a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: #fff; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    color: #fff;
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+  }
+  .hero .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.18;
+    max-width: 1000px;
+    margin: 0 auto 1.4rem;
+    color: #fff;
+  }
+  .hero h1 em { font-style: italic; color: var(--amber); }
+  .hero .subtitle {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.65);
+    max-width: 720px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+
+  /* ── BEFORE / AFTER ── */
+  .before-after {
+    display: flex;
+    gap: 0;
+    max-width: 860px;
+    margin: 0 auto 3rem;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .before-after .side { flex: 1; padding: 1.4rem 1.5rem; }
+  .before-after .before-side {
+    background: rgba(255,255,255,0.06);
+    border-right: 1px solid rgba(255,255,255,0.12);
+  }
+  .before-after .after-side { background: rgba(42,127,126,0.18); }
+  .before-after .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .before-after .before-side .label { color: rgba(255,255,255,0.4); }
+  .before-after .after-side  .label { color: var(--teal); }
+  .before-after .big-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+  .before-after .before-side .big-num { color: rgba(255,255,255,0.35); }
+  .before-after .after-side  .big-num { color: #fff; }
+  .before-after .desc { font-size: 0.8rem; line-height: 1.4; }
+  .before-after .before-side .desc { color: rgba(255,255,255,0.45); }
+  .before-after .after-side  .desc { color: rgba(255,255,255,0.75); }
+
+  /* ── META STRIP ── */
+  .meta-strip {
+    background: rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 1.1rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .meta-item { text-align: center; }
+  .meta-item .m-val {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--amber);
+    display: block;
+  }
+  .meta-item .m-label {
+    font-size: 0.73rem;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── CTA BUTTONS ── */
+  .cta-row {
+    display: flex;
+    gap: 0.85rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 2.25rem 2rem;
+    background: var(--navy);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.35rem;
+    border-radius: 6px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.83rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.15s, opacity 0.15s;
+    cursor: pointer;
+  }
+  .btn:hover { transform: translateY(-1px); opacity: 0.9; }
+  .btn-primary   { background: var(--teal);  color: #fff; }
+  .btn-secondary { background: transparent;  color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+  .btn-amber     { background: var(--amber); color: #fff; }
+
+  /* ── PAGE SECTIONS ── */
+  .page { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem; }
+  section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.25;
+    margin-bottom: 1.1rem;
+  }
+  h3 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 1.75rem 0 0.5rem;
+  }
+  p { margin-bottom: 1rem; font-size: 1rem; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── PIPELINE ── */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 1.75rem 0;
+    flex-wrap: wrap;
+  }
+  .pipeline-step {
+    flex: 1;
+    min-width: 130px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .pipeline-step .ps-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--teal);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .pipeline-step .ps-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+  .pipeline-step .ps-sub {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+  .pipeline-step.ps-highlight {
+    background: var(--navy);
+    border-color: var(--navy);
+  }
+  .pipeline-step.ps-highlight .ps-num  { color: var(--teal); }
+  .pipeline-step.ps-highlight .ps-name { color: #fff; }
+  .pipeline-step.ps-highlight .ps-sub  { color: rgba(255,255,255,0.5); }
+  .pipeline-arrow {
+    color: var(--teal);
+    font-size: 1.2rem;
+    padding: 0 0.4rem;
+    flex-shrink: 0;
+  }
+
+  /* ── API CALLOUT ── */
+  .api-callout {
+    background: var(--teal-light);
+    border: 1px solid var(--teal);
+    border-radius: 8px;
+    padding: 1.25rem 1.4rem;
+    margin: 1.5rem 0;
+    font-size: 0.97rem;
+  }
+  .api-callout .ac-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  /* ── TWO-COLUMN SETUP ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+  .two-col-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+  .two-col-card h4 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.75rem;
+  }
+  .two-col-card ul {
+    list-style: none;
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+  .two-col-card ul li {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0.5rem;
+  }
+  .two-col-card ul li:last-child { border-bottom: none; }
+  .two-col-card ul li::before { content: '—'; color: var(--teal); flex-shrink: 0; }
+
+  /* ── RESULTS TABLE ── */
+  .results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    margin: 1.5rem 0;
+  }
+  .results-table thead tr { background: var(--navy); color: #fff; }
+  .results-table th {
+    padding: 0.75rem 1.1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-align: left;
+  }
+  .results-table td {
+    padding: 0.7rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .results-table tbody tr:nth-child(even) td { background: var(--teal-light); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+  .badge-green  { background: var(--green-light);  color: var(--green-ink); }
+  .badge-red    { background: var(--red-light);     color: var(--red-ink); }
+  .badge-teal   { background: var(--teal-light);    color: var(--teal); }
+  .badge-amber  { background: var(--amber-light);   color: #92400E; }
+  .badge-muted  { background: #F3F4F6;              color: var(--muted); }
+
+  /* ── HONESTY BOX ── */
+  .honesty-box {
+    background: var(--amber-light);
+    border: 1px solid var(--amber);
+    border-radius: 8px;
+    padding: 1.25rem 1.4rem;
+    margin: 1.5rem 0;
+    font-size: 0.97rem;
+  }
+  .honesty-box .hb-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  /* ── DETERMINATION BOX (P3 equivalent of patient-box) ── */
+  .det-box {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 1.75rem;
+    margin: 1.5rem 0;
+    color: #fff;
+  }
+  .det-box .db-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    flex-wrap: wrap;
+  }
+  .det-box .db-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .det-box .db-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+  }
+  .det-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 1rem;
+    border-radius: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+  .det-badge-covered     { background: rgba(16,185,129,0.2); color: #6EE7B7; border: 1px solid rgba(16,185,129,0.3); }
+  .det-badge-not-covered { background: rgba(239,68,68,0.2);  color: #FCA5A5; border: 1px solid rgba(239,68,68,0.3); }
+
+  .criteria-list {
+    list-style: none;
+    margin: 0.75rem 0 1rem;
+  }
+  .criteria-list li {
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.4rem;
+    background: rgba(255,255,255,0.06);
+    border-radius: 5px;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.85);
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  .criteria-list li .ci-icon { flex-shrink: 0; margin-top: 0.05rem; }
+  .criteria-list li .ci-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--teal);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .citations-grid {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .citation-card {
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.05);
+    border-left: 2px solid var(--teal);
+    border-radius: 0 5px 5px 0;
+  }
+  .citation-card .cc-range {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--teal);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+  .citation-card .cc-text {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  /* ── FINDINGS LIST ── */
+  .finding-list { list-style: none; margin: 1rem 0; }
+  .finding-list li {
+    padding: 1.1rem 1.1rem 1.1rem 3.2rem;
+    margin-bottom: 0.85rem;
+    background: #fff;
+    border-left: 3px solid var(--teal);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.97rem;
+    position: relative;
+  }
+  .finding-list li::before {
+    content: attr(data-icon);
+    position: absolute;
+    left: 0.9rem;
+    top: 1.1rem;
+    font-size: 1.1rem;
+  }
+  .finding-list li strong { color: var(--navy); }
+
+  /* ── LIMITATIONS ── */
+  .limitations-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+  .limit-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem;
+    font-size: 0.95rem;
+  }
+  .limit-card strong { display: block; color: var(--navy); margin-bottom: 0.35rem; font-size: 0.95rem; }
+  .limit-card p { color: var(--muted); font-size: 0.9rem; margin: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.4);
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.82rem;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  footer a { color: var(--teal); text-decoration: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 680px) {
+    .before-after { flex-direction: column; }
+    .before-after .before-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.12); }
+    .meta-strip { gap: 1.5rem; }
+    .limitations-grid, .two-col, .citations-grid { grid-template-columns: 1fr; }
+    .pipeline { gap: 0.4rem; }
+    .pipeline-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">Chungyi Hsu · Healthcare AI</span>
+  <div class="nav-links">
+    <a href="https://sites.google.com/view/chungyi-hsu-showcase/home">← Portfolio</a>
+    <a href="#results">Results</a>
+    <a href="#demo">Demo output</a>
+    <a href="#findings">Findings</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="eyebrow">P3 · Healthcare AI · Connector Align · Shipped Jul 2026</span>
+  <h1>Can prior authorization reasoning be<br><em>accurate and auditable</em> at the same time?</h1>
+  <p class="subtitle">
+    Automating Medicare lumbar MRI coverage determinations grounded in CMS LCD L34220 —
+    every decision traces to the exact policy passage that justifies it.
+  </p>
+
+  <div class="before-after">
+    <div class="side before-side">
+      <div class="label">Without Citations API</div>
+      <div class="big-num">0</div>
+      <div class="desc">cited policy passages per determination. Reasoning is internal. No audit trail. Clinicians cannot contest what they cannot see.</div>
+    </div>
+    <div class="side after-side">
+      <div class="label">With Citations API</div>
+      <div class="big-num">50 / 50</div>
+      <div class="desc">citations returned and verified against LCD L34220. Every determination traces to the exact policy passage that justifies it.</div>
+    </div>
+  </div>
+
+  <div class="meta-strip">
+    <div class="meta-item">
+      <span class="m-val">10 / 10</span>
+      <span class="m-label">Determination accuracy</span>
+    </div>
+    <div class="meta-item">
+      <span class="m-val">100%</span>
+      <span class="m-label">Precision &amp; recall</span>
+    </div>
+    <div class="meta-item">
+      <span class="m-val">50</span>
+      <span class="m-label">Citations returned</span>
+    </div>
+    <div class="meta-item">
+      <span class="m-val">100%</span>
+      <span class="m-label">Citation faithfulness</span>
+    </div>
+    <div class="meta-item">
+      <span class="m-val">$0.18</span>
+      <span class="m-label">Total API cost</span>
+    </div>
+  </div>
+</div>
+
+<!-- CTAs -->
+<div class="cta-row">
+  <a href="#demo" class="btn btn-primary">▶ View Sample Output</a>
+  <a href="https://github.com/cytonyxu/p3_prior_auth/blob/main/docs/p3_methodology.pdf" class="btn btn-amber">↓ Methodology PDF</a>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page">
+
+  <!-- BACKGROUND -->
+  <section>
+    <span class="section-label">Background</span>
+    <h2>The prior authorization problem</h2>
+    <p>
+      Prior authorization is a payer requirement for physicians to obtain approval before certain
+      procedures are reimbursed. For Medicare, coverage is governed by Local Coverage Determinations
+      (LCDs) — dense regulatory documents specifying exactly which clinical presentations are covered,
+      which are not, and why.
+    </p>
+    <p>
+      The problem is not just speed. A physician denied authorization receives a letter. The letter
+      rarely cites the specific policy criterion that triggered the denial. Without that attribution,
+      the denial cannot be meaningfully contested, the clinical note cannot be improved, and the
+      system cannot be audited. Clinicians spend an estimated 14.9 hours per week on prior
+      authorization tasks — the majority of that time is not making decisions, it is chasing
+      justifications for decisions that have already been made.
+    </p>
+    <p>
+      P3 asks: can an LLM produce coverage determinations that are not just accurate, but
+      independently auditable — every claim traced to the exact policy passage that supports it?
+    </p>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section id="methodology">
+    <span class="section-label">Architecture</span>
+    <h2>Citations API, not RAG</h2>
+    <p>
+      The core technical choice for P3 is the Anthropic Citations API. This is distinct from
+      standard retrieval-augmented generation. There is no embedding step, no retrieval index,
+      no chunk selection. The full CMS policy document is passed as a structured document block
+      with <code style="font-family:'IBM Plex Mono',monospace;font-size:0.9em;background:rgba(0,0,0,0.06);padding:0.1em 0.35em;border-radius:3px;">citations: {enabled: true}</code>.
+      Claude reads the policy and the clinical note together, produces a determination, and returns
+      character-indexed citations — <code style="font-family:'IBM Plex Mono',monospace;font-size:0.9em;background:rgba(0,0,0,0.06);padding:0.1em 0.35em;border-radius:3px;">start_char_index</code> and
+      <code style="font-family:'IBM Plex Mono',monospace;font-size:0.9em;background:rgba(0,0,0,0.06);padding:0.1em 0.35em;border-radius:3px;">end_char_index</code> — pointing to the exact passages in the source document
+      that support each criterion.
+    </p>
+
+    <div class="api-callout">
+      <span class="ac-label">What this means for auditability</span>
+      A reviewer can look up chars 4790–5060 in LCD L34220 and confirm whether the cited text
+      actually contains the exclusion criterion Claude claims to have applied. The determination
+      is not just correct — it is independently verifiable. That distinction matters for
+      healthcare applications where accountability is non-negotiable.
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <span class="ps-num">INPUT 01</span>
+        <div class="ps-name">Synthetic clinical note</div>
+        <div class="ps-sub">Markdown, per case</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <span class="ps-num">INPUT 02</span>
+        <div class="ps-name">CMS LCD L34220</div>
+        <div class="ps-sub">Plain text, structured</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step ps-highlight">
+        <span class="ps-num">CORE</span>
+        <div class="ps-name">Citations API</div>
+        <div class="ps-sub">claude-sonnet-4-6</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <span class="ps-num">OUTPUT</span>
+        <div class="ps-name">PriorAuthResult</div>
+        <div class="ps-sub">determination + citations[]</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <span class="ps-num">EVAL</span>
+        <div class="ps-name">evals/run.py</div>
+        <div class="ps-sub">accuracy + faithfulness</div>
+      </div>
+    </div>
+
+    <h3>Policy documents</h3>
+    <div class="two-col">
+      <div class="two-col-card">
+        <h4>LCD L34220 — Lumbar MRI</h4>
+        <ul>
+          <li>Coverage indications and red flag conditions</li>
+          <li>4-week conservative management rule</li>
+          <li>Explicit exclusions (DDD, screening, duplicate imaging)</li>
+          <li>Contrast indications</li>
+          <li>Noridian J-E / J-F · Effective 10/23/2025</li>
+        </ul>
+      </div>
+      <div class="two-col-card">
+        <h4>Article A57206 — Billing &amp; Coding</h4>
+        <ul>
+          <li>Documentation requirements per claim</li>
+          <li>Attending physician order requirements</li>
+          <li>Utilization guidelines (single vs repeat MRI)</li>
+          <li>Professional component billing rules</li>
+          <li>Companion to LCD L34220</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:1rem;font-size:0.92rem;color:var(--muted);">
+      Both documents are public domain (CMS Medicare Coverage Database). No data use agreement required.
+      LCD L34220 was used as the primary document for all 10 evaluation cases; A57206 integrated for
+      documentation requirement checks.
+    </p>
+  </section>
+
+  <!-- DATASET -->
+  <section>
+    <span class="section-label">Dataset</span>
+    <h2>10 synthetic cases across all decision branches</h2>
+    <p>
+      Cases were authored to span the major decision pathways in LCD L34220: immediate red flag
+      coverage, non-red flag coverage after failed conservative management, and explicit exclusions.
+      Ground truth labels were assigned by the researcher prior to any model runs. The set is
+      balanced — 5 covered, 5 not covered.
+    </p>
+
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Scenario</th>
+          <th>LCD pathway</th>
+          <th>Ground truth</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Male, 67 — prostate cancer history, pain worsening at night</td>
+          <td>Red flag — history of cancer</td>
+          <td><span class="badge badge-green">✓ COVERED</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Female, 45 — LBP x 8 weeks, 6 weeks PT + NSAIDs, minimal improvement</td>
+          <td>Non-red flag — 4-week threshold met</td>
+          <td><span class="badge badge-green">✓ COVERED</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Male, 38 — LBP x 2 weeks post-lifting, no treatment attempted</td>
+          <td>Non-red flag — too early</td>
+          <td><span class="badge badge-red">✗ NOT COVERED</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Female, 58 — chronic DDD, stable, surgery explicitly not under consideration</td>
+          <td>Explicit exclusion — DDD without surgery</td>
+          <td><span class="badge badge-red">✗ NOT COVERED</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Male, 52 — foot drop, 3/5 LE weakness, progressive over 1 week</td>
+          <td>Red flag — progressive neuro deficit</td>
+          <td><span class="badge badge-green">✓ COVERED</span></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Female, 61 — fever 38.8°C, recent UTI, T2DM, pain worsening supine</td>
+          <td>Red flag — fever + infection + immune suppression</td>
+          <td><span class="badge badge-green">✓ COVERED</span></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Male, 34 — active IV drug use, fever, severe acute LBP x 5 days</td>
+          <td>Red flag — IV drug abuse + fever</td>
+          <td><span class="badge badge-green">✓ COVERED</span></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>Female, 42 — LBP x 3 weeks, PT started 1 week ago (3 sessions only)</td>
+          <td>Non-red flag — conservative treatment not yet complete</td>
+          <td><span class="badge badge-red">✗ NOT COVERED</span></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>Male, 55 — repeat MRI request, symptoms unchanged from prior MRI 4 months ago</td>
+          <td>Exclusion — duplicate imaging, no new indication</td>
+          <td><span class="badge badge-red">✗ NOT COVERED</span></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>Female, 50 — no symptoms, requesting preventive screening, family history only</td>
+          <td>Exclusion — screening, asymptomatic</td>
+          <td><span class="badge badge-red">✗ NOT COVERED</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results">
+    <span class="section-label">Results</span>
+    <h2>10/10 accuracy · 50/50 citations verified</h2>
+    <p>
+      All 10 cases produced correct determinations on first run. No cases were manually corrected
+      or re-run before reporting. Citation faithfulness was verified by automated substring
+      matching: each <code style="font-family:'IBM Plex Mono',monospace;font-size:0.9em;background:rgba(0,0,0,0.06);padding:0.1em 0.35em;border-radius:3px;">cited_text</code> was confirmed to exist verbatim in the LCD source file.
+    </p>
+
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Case</th>
+          <th>Ground truth</th>
+          <th>Claude</th>
+          <th>Correct</th>
+          <th>Citations</th>
+          <th>Faithfulness</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>COVERED</td><td>COVERED</td><td><span class="badge badge-green">✓</span></td><td>5</td><td>100%</td></tr>
+        <tr><td>2</td><td>COVERED</td><td>COVERED</td><td><span class="badge badge-green">✓</span></td><td>5</td><td>100%</td></tr>
+        <tr><td>3</td><td>NOT_COVERED</td><td>NOT_COVERED</td><td><span class="badge badge-green">✓</span></td><td>4</td><td>100%</td></tr>
+        <tr><td>4</td><td>NOT_COVERED</td><td>NOT_COVERED</td><td><span class="badge badge-green">✓</span></td><td>4</td><td>100%</td></tr>
+        <tr><td>5</td><td>COVERED</td><td>COVERED</td><td><span class="badge badge-green">✓</span></td><td>5</td><td>100%</td></tr>
+        <tr><td>6</td><td>COVERED</td><td>COVERED</td><td><span class="badge badge-green">✓</span></td><td>7</td><td>100%</td></tr>
+        <tr><td>7</td><td>COVERED</td><td>COVERED</td><td><span class="badge badge-green">✓</span></td><td>6</td><td>100%</td></tr>
+        <tr><td>8</td><td>NOT_COVERED</td><td>NOT_COVERED</td><td><span class="badge badge-green">✓</span></td><td>4</td><td>100%</td></tr>
+        <tr><td>9</td><td>NOT_COVERED</td><td>NOT_COVERED</td><td><span class="badge badge-green">✓</span></td><td>5</td><td>100%</td></tr>
+        <tr><td>10</td><td>NOT_COVERED</td><td>NOT_COVERED</td><td><span class="badge badge-green">✓</span></td><td>5</td><td>100%</td></tr>
+      </tbody>
+    </table>
+
+    <table class="results-table" style="margin-top:1rem;">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Accuracy</td><td><strong>100% (10/10)</strong></td><td>All cases, first run, no correction</td></tr>
+        <tr><td>Precision (COVERED)</td><td><strong>100%</strong></td><td>Zero false positives</td></tr>
+        <tr><td>Recall (COVERED)</td><td><strong>100%</strong></td><td>Zero false negatives</td></tr>
+        <tr><td>F1 (COVERED)</td><td><strong>1.00</strong></td><td>—</td></tr>
+        <tr><td>Avg citation faithfulness</td><td><strong>100% (50/50)</strong></td><td>Automated substring verification</td></tr>
+        <tr><td>Avg citations per case</td><td><strong>5.0</strong></td><td>Range: 4–7</td></tr>
+        <tr><td>Total input tokens</td><td>42,261</td><td>Avg 4,226 per case</td></tr>
+        <tr><td>Total output tokens</td><td>7,208</td><td>Avg 721 per case</td></tr>
+        <tr><td>Total API cost</td><td><strong>$0.18</strong></td><td>Full 10-case eval run</td></tr>
+      </tbody>
+    </table>
+
+    <div class="honesty-box">
+      <span class="hb-label">Honesty note</span>
+      Ten cases is not a clinical validation study. These notes were authored by the researcher
+      to clearly satisfy or fail LCD criteria — real clinical notes are messier, less structured,
+      and often contain missing or ambiguous information. Ground truth was set by the same
+      researcher who designed the cases. Independent clinical review and κ computation on
+      real-world notes would be required before any production use claim.
+    </div>
+  </section>
+
+  <!-- DEMO OUTPUT -->
+  <section id="demo">
+    <span class="section-label">Demo</span>
+    <h2>Real output — Case 1</h2>
+    <p>
+      This is Claude's actual determination for Case 1, shown verbatim. The clinical note is
+      one of the 10 synthetic cases evaluated. The citations below are character-indexed passages
+      from LCD L34220 that Claude identified as the specific policy basis for coverage.
+    </p>
+
+    <div class="det-box">
+      <div class="db-header">
+        <span class="db-title">Case 1 · Lumbar MRI Prior Auth</span>
+        <span class="db-meta">Male, 67 · M54.50 Low back pain · History of cancer C61 · LCD L34220</span>
+      </div>
+
+      <div class="det-badge det-badge-covered">✅ DETERMINATION: COVERED</div>
+
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem;">Criteria met</div>
+      <ul class="criteria-list">
+        <li>
+          <span class="ci-icon">✓</span>
+          <div>
+            <span class="ci-label">Red flag — history of cancer</span>
+            Patient has documented prostate cancer (C61, diagnosed 2019). History of cancer is explicitly enumerated as a red flag condition triggering immediate MRI coverage.
+          </div>
+        </li>
+        <li>
+          <span class="ci-icon">✓</span>
+          <div>
+            <span class="ci-label">Red flag — pain worsening when supine or at night</span>
+            Pain described as constant, not relieved by rest, worsening at night — an independent red flag criterion, each sufficient on its own.
+          </div>
+        </li>
+        <li>
+          <span class="ci-icon">✓</span>
+          <div>
+            <span class="ci-label">Conservative management waiver</span>
+            Red flag pathway bypasses the 4-week conservative management requirement. No prior treatment needed to establish coverage.
+          </div>
+        </li>
+        <li>
+          <span class="ci-icon">✓</span>
+          <div>
+            <span class="ci-label">MRI will affect medical decision-making</span>
+            Findings will inform workup for possible osseous metastases and determine need for aggressive therapy.
+          </div>
+        </li>
+      </ul>
+
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin:1rem 0 0.5rem;">Citations returned (5 total · 5/5 verified)</div>
+      <div class="citations-grid">
+        <div class="citation-card">
+          <span class="cc-range">LCD L34220 · chars 2927–3755</span>
+          <div class="cc-text">"Red flags include: … History of cancer … Pain that worsens when supine or at night …"</div>
+        </div>
+        <div class="citation-card">
+          <span class="cc-range">LCD L34220 · chars 2291–2719</span>
+          <div class="cc-text">"Lumbar MRI may be indicated for a patient with a red-flag condition … where the MRI result is needed to evaluate the condition to determine need for surgery or other aggressive therapy."</div>
+        </div>
+        <div class="citation-card">
+          <span class="cc-range">LCD L34220 · chars 3755–3920</span>
+          <div class="cc-text">"Spinal imaging tests are NOT generally necessary during the first month of symptoms except when a red flag is noted on history and physical examination."</div>
+        </div>
+        <div class="citation-card">
+          <span class="cc-range">LCD L34220 · chars 5063–5261</span>
+          <div class="cc-text">"When the findings will NOT affect treatment choices, the test is not reasonable or necessary. Medicare expects that information gained from the test will be used for medical decision-making."</div>
+        </div>
+      </div>
+
+      <div style="margin-top:1rem;padding:0.9rem;background:rgba(200,137,59,0.15);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;font-size:0.9rem;color:rgba(255,255,255,0.8);">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:0.3rem;">Proactive clinical note</span>
+        The request is for MRI without contrast. Given the history of prostate cancer and concern for possible osseous metastasis, the LCD indicates contrast is appropriate for CNS metastatic disease (chars 5834–6737). The ordering physician should consider whether contrast should be added to improve diagnostic yield.
+      </div>
+    </div>
+
+    <p style="color:var(--muted);font-size:0.92rem;">
+      The proactive contrast note was not prompted. The model inferred, correctly, that a cancer patient with night pain and new back symptoms warrants a contrast discussion — and cited the specific LCD passage that supports contrast indication. This is the kind of clinical nuance that makes the output useful beyond a binary covered/not-covered answer.
+    </p>
+  </section>
+
+  <!-- FINDINGS -->
+  <section id="findings">
+    <span class="section-label">Notable findings</span>
+    <h2>What the evaluation revealed</h2>
+
+    <ul class="finding-list">
+      <li data-icon="🚩">
+        <strong>The red flag pathway was correctly identified in every covered case.</strong>
+        All five covered cases involved at least one red flag (cancer, progressive neurological
+        deficit, fever, IV drug use). In each case the model correctly waived the 4-week
+        conservative management requirement and cited the specific red flag criterion by name.
+        No covered case was incorrectly routed through the non-red flag pathway.
+      </li>
+      <li data-icon="📋">
+        <strong>Explicit LCD exclusions produced the strongest NOT_COVERED signals.</strong>
+        Case 4 (DDD, surgery not under consideration) was denied on the explicit LCD exclusion
+        at chars 4790–5060 — the model cited this verbatim and correctly identified it as the
+        "single most decisive reason for denial." Case 10 (screening, asymptomatic) triggered
+        five separate denial criteria, including the LCD's prohibition on retrospective
+        validation by MRI abnormalities alone — a nuance that many human reviewers miss.
+      </li>
+      <li data-icon="🧠">
+        <strong>Clinical nuance surfaced without prompting.</strong>
+        Case 1 proactively noted that contrast should be considered given possible metastatic
+        disease — citing the specific LCD contrast indication at chars 5834–6737 without being
+        asked. Case 9 correctly identified that "patient wants to see if anything has changed"
+        constitutes patient preference, not clinical necessity, and cited the documentation
+        requirement that the medical record must "support a contemplated diagnosis or treatment
+        change derived from the MRI findings."
+      </li>
+      <li data-icon="📍">
+        <strong>Citation character ranges are stable across cases.</strong>
+        The same LCD passages were cited independently for analogous scenarios across
+        multiple cases — for example, the red flag enumeration at chars 2927–3755 appeared
+        in 7 of 10 cases. This suggests the Citations API produces reproducible attribution
+        rather than stochastic passage selection, which matters for auditing consistency
+        across large claim volumes.
+      </li>
+    </ul>
+  </section>
+
+  <!-- LIMITATIONS -->
+  <section>
+    <span class="section-label">Limitations</span>
+    <h2>What this is not</h2>
+    <div class="limitations-grid">
+      <div class="limit-card">
+        <strong>Small evaluation set (10 cases)</strong>
+        <p>Ten cases spans the major decision branches of L34220 but is insufficient to estimate real-world accuracy with confidence intervals. A production system requires hundreds of cases reviewed by independent clinicians.</p>
+      </div>
+      <div class="limit-card">
+        <strong>Single procedure type</strong>
+        <p>Lumbar MRI only. Prior auth automation at scale requires hundreds of procedure-specific LCDs and NCDs. Generalization to other procedures has not been tested.</p>
+      </div>
+      <div class="limit-card">
+        <strong>Synthetic clinical notes</strong>
+        <p>Cases were authored to clearly satisfy or fail LCD criteria. Real notes are messier — missing information, ambiguous timelines, inconsistent terminology. Performance on real-world notes may differ.</p>
+      </div>
+      <div class="limit-card">
+        <strong>Researcher-labeled ground truth</strong>
+        <p>Labels were assigned by the same researcher who designed the cases. Independent clinical review and inter-rater agreement (κ) computation are required before any production use claim.</p>
+      </div>
+      <div class="limit-card">
+        <strong>Single jurisdiction</strong>
+        <p>LCD L34220 applies to Noridian J-E and J-F (western US states). Coverage criteria vary by MAC jurisdiction. Determinations under other LCDs may differ for the same clinical scenario.</p>
+      </div>
+      <div class="limit-card">
+        <strong>Not a clinical tool</strong>
+        <p>This system has not been validated for clinical use, is not FDA-cleared, and must not be used to make or influence real prior authorization decisions. Research prototype on synthetic data only.</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page -->
+
+<!-- FOOTER CTA -->
+<div class="cta-row" style="background:#111827;">
+  <a href="https://github.com/cytonyxu/p3_prior_auth/blob/main/docs/p3_methodology.pdf" class="btn btn-amber">↓ Download methodology PDF</a>
+  <a href="https://sites.google.com/view/chungyi-hsu-showcase/home" class="btn btn-secondary">← Back to portfolio</a>
+</div>
+
+<footer>
+  Chungyi Hsu · Independent Healthcare AI Researcher · MBA, University of Chicago Booth &nbsp;|&nbsp;
+  Research prototype · Synthetic data only · Not a clinical tool &nbsp;|&nbsp;
+  <a href="https://sites.google.com/view/chungyi-hsu-showcase/home">Portfolio</a>
+  <br><span style="font-size:0.75rem;opacity:0.6;letter-spacing:0.02em;">This site logs anonymous visit data (IP, country, referrer) for portfolio analytics.</span>
+</footer>
+
+<script id="_vt">
+(function(){
+  var PAGE    = 'case-study-p3';
+  var LOG_URL = 'https://script.google.com/macros/s/AKfycbxGmA1PGcQEnKlx6tSc_GUxF06eEaJLurvx7f9ng-3FnBWb7QOzIo-NYJmYsNzD9O8Z/exec';  /* ← paste your Apps Script Web App URL here */
+  var TOKEN   = '310ec9679133f3';     /* ← paste your ipinfo.io token here         */
+  if (!LOG_URL || LOG_URL === '__APPS_SCRIPT_URL__') return;
+  try {
+    var url = TOKEN && TOKEN !== '__IPINFO_TOKEN__'
+      ? 'https://ipinfo.io/json?token=' + TOKEN
+      : 'https://ipinfo.io/json';
+    fetch(url)
+      .then(function(r){ return r.json(); })
+      .then(function(ip){
+        var row = {
+          ts:      new Date().toISOString(),
+          page:    PAGE,
+          ip:      ip.ip      || '',
+          city:    ip.city    || '',
+          region:  ip.region  || '',
+          country: ip.country || '',
+          org:     ip.org     || '',
+          ref:     document.referrer || '(direct)',
+          ua:      navigator.userAgent.substring(0, 220)
+        };
+        fetch(LOG_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(row) });
+      }).catch(function(){});
+  } catch(e){}
+})();
+</script>
+
+</body>
+</html>
